@@ -46,7 +46,12 @@ Territory::Territory(std::string name, std::string continent, std::string owner,
     this->armies = new int(armies);
     this->id = new int(id);
     // We copy the vector so external callers keep ownership of their container
-    this->adjacentTerritories = new std::vector<Territory*>(*adjacent);
+    // BUT: the caller might pass nullptr; handle that safely.
+    if (adjacent) {
+        this->adjacentTerritories = new std::vector<Territory*>(*adjacent);
+    } else {
+        this->adjacentTerritories = new std::vector<Territory*>();
+    }
 }
 
 // Assignment operator: clean old heap data, then deep-copy
@@ -93,9 +98,15 @@ void Territory::setContinent(std::string continent) { *this->continent = contine
 void Territory::setOwner(std::string owner) { *this->owner = owner; }
 void Territory::setArmies(int armies) { *this->armies = armies; }
 void Territory::setId(int id) { *this->id = id; }
+// --- Setters ---
 void Territory::setAdjacentTerritories(std::vector<Territory*>* adj) {
     delete adjacentTerritories;
-    adjacentTerritories = new std::vector<Territory*>(*adj);
+    // Guard nullptr: replace with empty vector if none provided
+    if (adj) {
+        adjacentTerritories = new std::vector<Territory*>(*adj);
+    } else {
+        adjacentTerritories = new std::vector<Territory*>();
+    }
 }
 
 // Add a neighbor. I guard against duplicates (by ID equality).
@@ -622,4 +633,3 @@ bool MapLoader::loadMap(const std::string& filename) {
     std::cout << "Map loading completed. Validating...\n";
     return map->validate();
 }
-
