@@ -42,7 +42,6 @@ void testCards() {
 
     // 5) Show results: hand empty, cards back in deck, orders added
     std::cout << "After playing all cards:\n" << deck << "\n" << hand << "\n";
-    std::cout << "Player's orders:\n" << *(alice.getOrder()) << "\n";
 }
 
 int main() {
