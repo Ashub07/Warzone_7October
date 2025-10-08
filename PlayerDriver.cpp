@@ -51,10 +51,10 @@ void testPlayer() {
     for (auto* c : cards1) delete c;
 }
 
-/*
+
 int main() {
     cout << "----- Player Driver Test -----\n";
     testPlayer();
     return 0;
 }
-*/
+
